@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подписать документ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            color: #ecf0f1;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            margin: 10px 0;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #27ae60;
+            border: none;
+            border-radius: 5px;
+            color: #ecf0f1;
+        }
+        input[type="submit"]:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+    <script>
+        function loadKeys() {
+            var userID = document.getElementById("user_id").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/get_user_keys?user_id=" + userID, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var keys = JSON.parse(xhr.responseText);
+                    var keySelect = document.getElementById("bank_id");
+                    keySelect.innerHTML = "";
+                    keys.forEach(function (key) {
+                        var option = document.createElement("option");
+                        option.value = key.ID;
+                        option.text = key.Bank;
+                        keySelect.add(option);
+                    });
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Подписать документ</h1>
+        <form action="/sign" method="post">
+            <label for="file_id">Выберите файл:</label>
+            <select name="file_id" id="file_id">
+                {{range .Files}}
+                <option value="{{.ID}}">{{.Filename}}</option>
+                {{end}}
+            </select>
+            <label for="user_id">Выберите пользователя:</label>
+            <select name="user_id" id="user_id" onchange="loadKeys()">
+                {{range .Users}}
+                <option value="{{.ID}}">{{.Login}}</option>
+                {{end}}
+            </select>
+            <label for="bank_id">Выберите ключ:</label>
+            <select name="bank_id" id="bank_id">
+                <!-- Ключи будут загружены динамически -->
+            </select>
+            <input type="submit" value="Подписать">
+        </form>
+    </div>
+</body>
+</html>

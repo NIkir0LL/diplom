@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка подписанного документа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #ecf0f1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        th {
+            background-color: #34495e;
+        }
+        tr:nth-child(even) {
+            background-color: #34495e;
+        }
+        .button {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #ecf0f1;
+            background-color: #27ae60;
+            border: none;
+            border-radius: 3px;
+        }
+        .button:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+    <script>
+        function showAlert(message) {
+            alert(message);
+        }
+    </script>
+</head>
+<body>
+    <h1>Проверка подписанного документа</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>ID файла</th>
+            <th>ID ключа</th>
+            <th>Путь к подписанному файлу</th>
+            <th>Путь к подписи</th>
+            <th>Путь к открытому ключу</th>
+            <th>Путь к сертификату</th>
+            <th>Действия</th>
+        </tr>
+        {{range .SignedDocuments}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.FileID}}</td>
+            <td>{{.KeyID}}</td>
+            <td>{{.SignedFilePath}}</td>
+            <td>{{.SignaturePath}}</td>
+            <td>{{.PublicKeyPath}}</td>
+            <td>{{.CertificatePath}}</td>
+            <td>
+                <form action="/verify_document" method="post" style="display:inline;">
+                    <input type="hidden" name="file_id" value="{{.FileID}}">
+                    <input type="hidden" name="key_id" value="{{.KeyID}}">
+                    <button type="submit" class="button">Проверить</button>
+                </form>
+                <form action="/delete_signed_document" method="post" style="display:inline;">
+                    <input type="hidden" name="signed_doc_id" value="{{.ID}}">
+                    <button type="submit" class="button">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {{end}}
+    </table>
+    {{if .Alert}}
+        <script>
+            showAlert("{{.Alert}}");
+        </script>
+    {{end}}
+</body>
+</html>

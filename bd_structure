@@ -1,0 +1,47 @@
+-- Создание таблицы подписей
+CREATE TABLE signatures (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    bank VARCHAR(255),
+    public_key_path VARCHAR(255),
+    private_key_path VARCHAR(255),
+    certificate_path VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Создание таблицы пользователей
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    login VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE files (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    filename VARCHAR(255) NOT NULL,
+    filepath VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE signatures (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    bank_name VARCHAR(255) NOT NULL,
+    public_key_path VARCHAR(255) NOT NULL,
+    private_key_path VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE signed_documents (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    file_id INT NOT NULL,
+    key_id INT NOT NULL,
+    signed_file_path VARCHAR(255) NOT NULL,
+    signature_path VARCHAR(255) NOT NULL,
+    public_key_path VARCHAR(255) NOT NULL,
+    certificate_path VARCHAR(255) NOT NULL,
+    signed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (file_id) REFERENCES files(id),
+    FOREIGN KEY (key_id) REFERENCES signatures(id)
+);
+
+
+ALTER TABLE `signatures` CHANGE `bank_name` `bank` VARCHAR(255) DEFAULT NULL;

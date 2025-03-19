@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генерация ключа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #ecf0f1;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        th {
+            background-color: #34495e;
+        }
+        tr:nth-child(even) {
+            background-color: #34495e;
+        }
+    </style>
+</head>
+<body>
+    <h1>Генерация ключа</h1>
+    <form action="/generate_key" method="post">
+        <label for="user_id">ID пользователя:</label>
+        <select id="user_id" name="user_id" required>
+            {{range .Users}}
+            <option value="{{.ID}}">{{.Login}}</option>
+            {{end}}
+        </select><br>
+        <label for="bank">Банк:</label>
+        <input type="text" id="bank" name="bank" required><br>
+        <button type="submit">Сгенерировать</button>
+    </form>
+
+    <h2>Список ключей</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>ID пользователя</th>
+            <th>Имя пользователя</th>
+            <th>Банк</th>
+            <th>Открытый ключ</th>
+            <th>Закрытый ключ</th>
+            <th>Сертификат</th>
+            <th>Действия</th>
+        </tr>
+        {{range .Keys}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.UserID}}</td>
+            <td>{{.UserName}}</td>
+            <td>{{.Bank}}</td>
+            <td>{{.PublicKeyPath}}</td> <!-- Только имя файла -->
+            <td>{{.PrivateKeyPath}}</td> <!-- Только имя файла -->
+            <td>{{.CertificatePath}}</td> <!-- Только имя файла -->
+            <td>
+                <form action="/delete_key" method="post" style="display:inline;">
+                    <input type="hidden" name="key_id" value="{{.ID}}">
+                    <button type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {{end}}
+    </table>
+</body>
+</html>
