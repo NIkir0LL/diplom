@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Логи действий системы</title>
+    <link rel="stylesheet" href="/css/logs.css">
+</head>
+<body>
+    <h1>Логи действий системы</h1>
+
+    {{if .HasAlert}}
+    <div id="custom-alert" class="alert-overlay">
+        <div class="alert-box {{if eq .AlertType "success"}}alert-success{{else}}alert-danger{{end}}">
+            <div class="alert-message">{{.Alert}}</div>
+            <div class="alert-buttons">
+                <button class="button button-primary" onclick="closeCustomAlert()">ОК</button>
+            </div>
+        </div>
+    </div>
+    {{end}}
+
+    <div class="container">
+        <div class="card">
+            <h2>Поиск логов</h2>
+            <form action="/logs" method="get" class="search-form">
+                <div class="form-group">
+                    <label for="user_id">ID пользователя:</label>
+                    <input type="text" name="user_id" id="user_id" 
+                           placeholder="Введите ID" 
+                           value="{{.UserIDQuery}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="action">Действие:</label>
+                    <input type="text" name="action" id="action" 
+                           placeholder="Поиск по действию" 
+                           value="{{.ActionQuery}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="details">Детали:</label>
+                    <input type="text" name="details" id="details" 
+                           placeholder="Поиск по деталям" 
+                           value="{{.DetailsQuery}}">
+                </div>
+
+                <div class="form-group date-group">
+                    <div class="date-input">
+                        <label for="startDate">С даты:</label>
+                        <input type="date" name="startDate" id="startDate" 
+                               value="{{.StartDate}}">
+                    </div>
+                    <div class="date-input">
+                        <label for="endDate">По дату:</label>
+                        <input type="date" name="endDate" id="endDate" 
+                               value="{{.EndDate}}">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="button button-secondary">Найти</button>
+                    <a href="/logs" class="button button-danger">Сбросить</a>
+                    <a href="/" class="button button-secondary">На главную</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Список событий</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Пользователь</th>
+                        <th>Действие</th>
+                        <th>Детали</th>
+                        <th>Дата и время</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Logs}}
+                    <tr>
+                        <td>{{.ID}}</td>
+                        <td>{{.UserID}}</td>
+                        <td>{{.Action}}</td>
+                        <td>{{.Details}}</td>
+                        <td>{{.CreatedAt.Format "2006-01-02 15:04:05"}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function closeCustomAlert() {
+            const alertElement = document.getElementById('custom-alert');
+            if (alertElement) {
+                alertElement.remove();
+            }
+        }
+    </script>
+</body>
+</html>

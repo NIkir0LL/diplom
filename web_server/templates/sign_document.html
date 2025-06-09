@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подписать документ</title>
+    <link rel="stylesheet" href="/css/sign_document.css">
+</head>
+<body>
+    <h1>Подписать документ</h1>
+    <!-- Кастомный alert -->
+    {{if .HasAlert}}
+    <div id="custom-alert" class="alert-overlay">
+        <div class="alert-box {{if eq .AlertType "success"}}alert-success{{else}}alert-danger{{end}}">
+            <div class="alert-message">{{.Alert}}</div>
+            <div class="alert-buttons">
+                <button class="button button-primary" onclick="closeCustomAlert()">ОК</button>
+            </div>
+        </div>
+    </div>
+    {{end}}
+    <div class="container">
+        <!-- Файлы (слева) -->
+        <div class="card">
+            <h2>Файлы</h2>
+            <form id="search-file-form" class="search-form">
+                <input type="text" name="search_file" placeholder="Поиск по названию файла..." value="{{.SearchFile}}">
+                <button type="submit" class="button button-secondary">Найти</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Выбор</th>
+                        <th>Название файла</th>
+                    </tr>
+                </thead>
+                <tbody id="files-table-body">
+                    {{range .Files}}
+                    <tr>
+                        <td><input type="radio" name="file_id" value="{{.ID}}" form="sign-form" required></td>
+                        <td>{{.Filename}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Ключи (по центру) -->
+        <div class="card">
+            <h2>Ключи</h2>
+            <form id="search-key-form" class="search-form search-form-keys">
+                <input type="text" name="search_key" placeholder="Поиск по банку..." value="{{.SearchKey}}">
+                <button type="submit" class="button button-secondary">Найти</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Выбор</th>
+                        <th>Банк</th>
+                    </tr>
+                </thead>
+                <tbody id="keys-table-body">
+                    {{range .Keys}}
+                    <tr>
+                        <td><input type="radio" name="key_id" value="{{.ID}}" form="sign-form" required></td>
+                        <td>{{.Bank}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Кнопки (справа) -->
+        <div class="card center-buttons">
+            <form id="sign-form" action="/sign_document" method="post">
+                <button type="submit" class="button button-primary">Подписать</button>
+                <a href="/" class="button button-secondary">Вернуться на главную</a>
+            </form>
+        </div>
+    </div>
+    <script src="/js/sign_document.js"></script>
+</body>
+</html>

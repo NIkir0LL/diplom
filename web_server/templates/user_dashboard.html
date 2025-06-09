@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocSigner User Dashboard</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    {{if .HasAlert}}
+    <div id="custom-alert" class="alert-overlay">
+        <div class="alert-box {{if eq .AlertType "success"}}alert-success{{else}}alert-danger{{end}}">
+            <div class="alert-message">{{.Alert}}</div>
+            <button class="button button-primary" onclick="closeCustomAlert()">ОК</button>
+        </div>
+    </div>
+    {{end}}
+
+    <div class="container">
+        <div class="card">
+            <h1>DocSigner User Dashboard</h1>
+            <div class="button-group">
+                <a href="/upload_file" class="button button-primary">Загрузить файл</a>
+                <a href="/sign_document" class="button button-primary">Подписать документ</a>
+                <a href="/verify_document" class="button button-primary">Проверить подписи</a>
+                <a href="/upload_verify_archive" class="button button-primary">Проверить архив</a>
+                <a href="/logout" class="button button-secondary">Выйти</a>
+            </div>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+</body>
+</html>

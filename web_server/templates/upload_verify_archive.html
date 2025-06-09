@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка архива</title>
+    <link rel="stylesheet" href="/css/upload_verify_archive.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Проверка подписанного архива</h1>
+            {{if .HasAlert}}
+                <div class="alert-overlay" id="custom-alert">
+                    <div class="alert-box alert-{{.AlertType}}">
+                        <div class="alert-message">{{.Alert}}</div>
+                        <div class="alert-buttons">
+                            <button onclick="closeCustomAlert()" class="button">ОК</button>
+                        </div>
+                    </div>
+                </div>
+            {{end}}
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="archive">Загрузить ZIP-архив</label>
+                    <input type="file" id="archive" name="archive" accept=".zip" required>
+                </div>
+                <button type="submit" class="button button-primary">Проверить</button>
+            </form>
+            <a href="/verify_document" class="button button-secondary" style="margin-top: 1rem;">Назад</a>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const alert = document.getElementById('custom-alert');
+            if (alert) {
+                document.body.classList.add('alert-active');
+                alert.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+        });
+
+        function closeCustomAlert() {
+            const alert = document.getElementById('custom-alert');
+            if (alert) {
+                alert.style.animation = 'popOut 0.2s ease-in';
+                setTimeout(() => {
+                    alert.remove();
+                    document.body.classList.remove('alert-active');
+                }, 200);
+            }
+        }
+    </script>
+</body>
+</html>

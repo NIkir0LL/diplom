@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocSigner Dashboard</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <!-- Кастомный алерт -->
+    {{if .HasAlert}}
+    <div id="custom-alert" class="alert-overlay">
+        <div class="alert-box {{if eq .AlertType "success"}}alert-success{{else}}alert-danger{{end}}">
+            <div class="alert-message">{{.Alert}}</div>
+            <div class="alert-buttons">
+                <button class="button button-primary" onclick="closeCustomAlert()">ОК</button>
+            </div>
+        </div>
+    </div>
+    {{end}}
+
+    <div class="container">
+        <div class="card">
+            <h1>DocSigner Dashboard</h1>
+            <div class="button-group">
+                <a href="/add_user" class="button button-primary" aria-label="Добавить пользователя">Добавить пользователя</a>
+                <a href="/upload_file" class="button button-primary" aria-label="Загрузить файл">Загрузить файл</a>
+                <a href="/generate_key" class="button button-primary" aria-label="Генерация ключа">Генерация ключа</a>
+                <a href="/sign_document" class="button button-primary" aria-label="Подписать документ">Подписать документ</a>
+                <a href="/verify_document" class="button button-primary" aria-label="Проверить подписи">Проверить подписи</a>
+                <a href="/logout" class="button button-secondary" aria-label="Выйти">Выйти</a>
+            </div>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+</body>
+</html>
