@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка файла</title>
+    <link rel="stylesheet" href="/css/upload_file.css">
+</head>
+<body>
+    <h1>Загрузка файла</h1>
+
+    <!-- Кастомный алерт -->
+    {{if .HasAlert}}
+    <div id="custom-alert" class="alert-overlay">
+        <div class="alert-box {{if eq .AlertType "success"}}alert-success{{else}}alert-danger{{end}}">
+            <div class="alert-message">{{.Alert}}</div>
+            <div class="alert-buttons">
+                <button class="button button-primary" onclick="closeCustomAlert()">ОК</button>
+            </div>
+        </div>
+    </div>
+    {{end}}
+
+    <div class="container">
+        <!-- Левая колонка -->
+        <div class="card">
+            <h2>Загрузить новый файл</h2>
+            <form action="/upload_file" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">Выберите файл</label>
+                    <input type="file" id="file" name="file" required>
+                </div>
+                <button type="submit" class="button button-primary">Загрузить</button>
+            </form>
+        </div>
+
+        <!-- Правая колонка -->
+        <div class="card">
+            <h2>Поиск файлов</h2>
+            <form action="/search_files" method="get" class="search-form">
+                <input type="text" name="query" placeholder="Введите имя файла...">
+                <button type="submit" class="button button-secondary">Поиск</button>
+            </form>
+            <a href="/" class="button button-secondary">Вернуться на главную</a>
+        </div>
+    </div>
+
+    <!-- Список файлов -->
+    <div class="card">
+        <h2>Список загруженных файлов</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Имя файла</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Files}}
+                <tr>
+                    <td>{{.ID}}</td>
+                    <td>{{.Filename}}</td>
+                    <td class="actions">
+                        <form action="/delete_file" method="post">
+                            <input type="hidden" name="file_id" value="{{.ID}}">
+                            <button type="submit" class="button button-danger">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+    <script src="/js/upload_file.js"></script>
+</body>
+</html>

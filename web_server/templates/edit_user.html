@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изменить пользователя</title>
+    <link rel="stylesheet" href="/css/edit_user.css">
+</head>
+<body>
+    <!-- Кастомный алерт -->
+    {{if .HasAlert}}
+    <div id="custom-alert" class="alert-overlay">
+        <div class="alert-box {{if eq .AlertType "success"}}alert-success{{else}}alert-danger{{end}}">
+            <div class="alert-message">{{.Alert}}</div>
+            <div class="alert-buttons">
+                <button class="button button-primary" onclick="closeCustomAlert()">ОК</button>
+            </div>
+        </div>
+    </div>
+    {{end}}
+
+    <div class="container">
+        <div class="card">
+            <h1>Изменить пользователя</h1>
+            <form action="/update_user" method="post">
+                <input type="hidden" name="user_id" value="{{.User.ID}}">
+                <div class="form-group">
+                    <label for="username">Имя пользователя</label>
+                    <input type="text" id="username" name="username" value="{{.User.Login}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Роль</label>
+                    <select id="role" name="role" required>
+                        <option value="admin" {{if eq .User.Role "admin"}}selected{{end}}>Администратор</option>
+                        <option value="user" {{if eq .User.Role "user"}}selected{{end}}>Пользователь</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="button button-primary">Сохранить</button>
+                    <a href="/add_user" class="button button-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/js/edit_user.js"></script>
+</body>
+</html>

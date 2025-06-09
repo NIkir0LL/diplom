@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр сертификата</title>
+    <link rel="stylesheet" href="/css/view_certificate.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Детали сертификата</h1>
+        <div class="certificate-details">
+            <p><strong>Пользователь:</strong> {{.Key.UserName}}</p>
+            <p><strong>Банк:</strong> {{.Key.Bank}}</p>
+            <p><strong>Организация:</strong> {{.Organization}}</p>
+            <p><strong>Общее имя (CN):</strong> {{.Certificate.Subject.CommonName}}</p>
+            <p><strong>Серийный номер:</strong> {{.Certificate.SerialNumber}}</p>
+            <p><strong>Дата выдачи:</strong> {{.Certificate.NotBefore.Format "2006-01-02 15:04:05"}}</p>
+            <p><strong>Дата истечения:</strong> {{.Certificate.NotAfter.Format "2006-01-02 15:04:05"}}</p>
+            <p><strong>Издатель:</strong> {{.Certificate.Issuer.CommonName}}</p>
+        </div>
+        <a href="/generate_key" class="btn btn-secondary">Вернуться</a>
+    </div>
+    <script src="/js/generate_key.js"></script>
+</body>
+</html>
